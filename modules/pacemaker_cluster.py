@@ -53,7 +53,6 @@ options:
       default: true
 requirements:
     - "python >= 2.6"
-    - "shade"
 '''
 EXAMPLES = '''
 ---

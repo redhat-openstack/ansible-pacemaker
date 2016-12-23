@@ -46,7 +46,6 @@ options:
       default: 300
 requirements:
     - "python >= 2.6"
-    - "shade"
 '''
 EXAMPLES = '''
 ---
