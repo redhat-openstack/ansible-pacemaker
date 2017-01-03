@@ -35,6 +35,11 @@ options:
         - Indicate desired state of the cluster
       choices: ['online', 'offline', 'restart', 'cleanup']
       required: true
+    check_and_fail:
+      description:
+        - Exit if the current state is not the one indicated in the state option
+      required: false
+      default: false
     node:
       description:
         - Specify which node of the cluster you want to manage. None == the
@@ -159,6 +164,7 @@ def set_node(module, state, timeout, force, node='all'):
 def main():
     argument_spec = dict(
         state = dict(choices=['online', 'offline', 'restart', 'cleanup']),
+        check_and_fail=dict(default=False, type='bool'),
         node  = dict(default=None),
         timeout=dict(default=300, type='int'),
         force=dict(default=True, type='bool'),
@@ -168,6 +174,7 @@ def main():
         supports_check_mode=True,
     )
     changed = False
+    check_and_fail = module.params['check_and_fail']
     state = module.params['state']
     node = module.params['node']
     force = module.params['force']
@@ -181,6 +188,8 @@ def main():
                 module.exit_json(changed=changed,
                          out=cluster_state)
             else:
+                if check_and_fail:
+                    module.fail_json(msg="State not found to be in %s " % state)
                 set_cluster(module, state, timeout, force)
                 cluster_state = get_cluster_status(module)
                 if cluster_state == state:
@@ -196,6 +205,8 @@ def main():
                     module.exit_json(changed=changed,
                              out=cluster_state)
                 else:
+                    if check_and_fail:
+                        module.fail_json(msg="State not found to be in %s " % state)
                     # Set cluster status if needed
                     set_cluster(module, state, timeout, force)
                     cluster_state = get_node_status(module, node)
