@@ -18,6 +18,7 @@
 #   under the License.
 
 from distutils.version import StrictVersion
+import time
 
 DOCUMENTATION = '''
 ---
@@ -32,7 +33,7 @@ options:
     state:
       description:
         - Indicate desired state of the cluster
-      choices: ['manage', 'unmanage', 'enable', 'disalbe', 'restart', 'show', 'delete']
+      choices: ['manage', 'unmanage', 'enable', 'disable', 'restart', 'show', 'delete']
       required: true
     resource:
       description:
@@ -44,6 +45,16 @@ options:
         - Timeout when the module should considered that the action has failed
       required: false
       default: 300
+    check_mode:
+        description:
+          - Check only the status of the resource
+        required: false
+        default: false
+    wait_for_resource:
+        description:
+          - Wait for resource to get the required state, will failed if the timeout is reach
+        required: false
+        default: false
 requirements:
     - "python >= 2.6"
 '''
@@ -61,13 +72,17 @@ RETURN = '''
 
 '''
 
-def get_resource_state(module, resource):
+def check_resource_state(module, resource, state):
+    # get resources
+    cmd = "bash -c 'pcs status --full | grep %s'" % resource
+    rc, out, err = module.run_command(cmd)
+    if state in out.lower():
+        return True
+
+def get_resource(module, resource):
     cmd = "pcs resource show %s" % resource
     rc, out, err = module.run_command(cmd)
     return out
-
-def get_resource(module):
-    return True
 
 def set_resource_state(module, resource, state, timeout):
     cmd = "pcs resource %s %s --wait=%s" % (state, resource, timeout)
@@ -76,9 +91,11 @@ def set_resource_state(module, resource, state, timeout):
 
 def main():
     argument_spec = dict(
-        state = dict(choices=['manage', 'unmanage', 'enable', 'disalbe', 'restart', 'show', 'delete', 'started', 'stopped']),
+        state = dict(choices=['manage', 'unmanage', 'enable', 'disable', 'restart', 'show', 'delete', 'started', 'stopped']),
         resource  = dict(default=None),
         timeout=dict(default=300, type='int'),
+        check_mode = dict(default=False, type='bool'),
+        wait_for_resource = dict(default=False, type='bool'),
     )
 
     module = AnsibleModule(argument_spec,
@@ -88,9 +105,28 @@ def main():
     state = module.params['state']
     resource = module.params['resource']
     timeout = module.params['timeout']
+    check_mode = module.params['check_mode']
+    wait_for_resource = module.params['wait_for_resource']
+
+    if check_mode:
+        if check_resource_state(module, resource, state):
+            module.exit_json(changed=False,
+              out={'resource': resource, 'status': state})
+        else:
+            if wait_for_resource:
+                t = time.time()
+                status = False
+                while time.time() < t+timeout:
+                    if check_resource_state(module, resource, state):
+                        status = True
+                        break
+                if status:
+                    module.exit_json(changed=False,
+                      out={'resource': resource, 'status': state})
+            module.fail_json(msg="Failed, the resource %s is not %s\n" % (resource, state))
 
     #TODO: check state before doing anything:
-    resource_state = get_resource_state(module, resource)
+    resource_state = get_resource(module, resource)
     # if resource_state = state:
     out = set_resource_state(module, resource, state, timeout)
     module.exit_json(changed=True,
