@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fabf19d9_cd2fd786",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1003948
+      },
+      "writtenOn": "2017-02-01T12:52:24Z",
+      "side": 1,
+      "message": "s",
+      "range": {
+        "startLine": 50,
+        "startChar": 34,
+        "endLine": 50,
+        "endChar": 37
+      },
+      "revId": "e38771438df4327364632143881c1d3285e2f28a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_4d5aa72b",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1003948
+      },
+      "writtenOn": "2017-02-01T12:52:24Z",
+      "side": 1,
+      "message": "if check_resource_state doesn\u0027t return true, do we just exit or will there be an error?",
+      "range": {
+        "startLine": 112,
+        "startChar": 11,
+        "endLine": 112,
+        "endChar": 31
+      },
+      "revId": "e38771438df4327364632143881c1d3285e2f28a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_ed497b61",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1003948
+      },
+      "writtenOn": "2017-02-01T12:52:24Z",
+      "side": 1,
+      "message": "so wait_for_resource is only used together with check_mode?",
+      "range": {
+        "startLine": 116,
+        "startChar": 15,
+        "endLine": 116,
+        "endChar": 32
+      },
+      "revId": "e38771438df4327364632143881c1d3285e2f28a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
