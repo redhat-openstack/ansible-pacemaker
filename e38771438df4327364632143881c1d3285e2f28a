@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_0d682fb8",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-02-01T12:55:54Z",
+      "side": 1,
+      "message": "oops",
+      "parentUuid": "fabf19d9_cd2fd786",
+      "range": {
+        "startLine": 50,
+        "startChar": 34,
+        "endLine": 50,
+        "endChar": 37
+      },
+      "revId": "e38771438df4327364632143881c1d3285e2f28a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_4d5aa72b",
         "filename": "modules/pacemaker_resource.py",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "fabf19d9_cd5d9716",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-02-01T12:55:54Z",
+      "side": 1,
+      "message": "yep it will go to the L126",
+      "parentUuid": "fabf19d9_4d5aa72b",
+      "range": {
+        "startLine": 112,
+        "startChar": 11,
+        "endLine": 112,
+        "endChar": 31
+      },
+      "revId": "e38771438df4327364632143881c1d3285e2f28a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fabf19d9_ed497b61",
         "filename": "modules/pacemaker_resource.py",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2017-02-01T12:52:24Z",
       "side": 1,
       "message": "so wait_for_resource is only used together with check_mode?",
+      "range": {
+        "startLine": 116,
+        "startChar": 15,
+        "endLine": 116,
+        "endChar": 32
+      },
+      "revId": "e38771438df4327364632143881c1d3285e2f28a",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_2db2d34c",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-02-01T12:55:54Z",
+      "side": 1,
+      "message": "yep, but probably good to implement it for the set_resource_state function.",
+      "parentUuid": "fabf19d9_ed497b61",
       "range": {
         "startLine": 116,
         "startChar": 15,
