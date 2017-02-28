@@ -76,8 +76,13 @@ def check_resource_state(module, resource, state):
     # get resources
     cmd = "bash -c 'pcs status --full | grep %s'" % resource
     rc, out, err = module.run_command(cmd)
-    if state in out.lower():
-        return True
+    states = [ state ]
+    if state == 'started':
+        states.append('master')
+
+    for i in states:
+       if i in out.lower():
+           return True
 
 def get_resource(module, resource):
     cmd = "pcs resource show %s" % resource
