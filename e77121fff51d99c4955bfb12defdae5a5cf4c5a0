@@ -22,6 +22,30 @@
       "revId": "e77121fff51d99c4955bfb12defdae5a5cf4c5a0",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fabf19d9_e340e737",
+        "filename": "modules/pacemaker_resource.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1006298
+      },
+      "writtenOn": "2017-02-28T12:37:36Z",
+      "side": 1,
+      "message": "Not sure that will work though?\n\u003e\u003e\u003e foo \u003d \"\"\"\n... galera     (ocf::heartbeat:galera):        Master overcloud-controller-1\n...     galera     (ocf::heartbeat:galera):        Master overcloud-controller-2\n...     galera     (ocf::heartbeat:galera):        Master overcloud-controller-0\n... \"\"\"\n\u003e\u003e\u003e states \u003d [ \u0027started\u0027, \u0027master\u0027 ]\n\u003e\u003e\u003e foo.lower() in states\nFalse\n\u003e\u003e\u003e states[0] in foo.lower()\nFalse\n\u003e\u003e\u003e states[1] in foo.lower()\nTrue",
+      "parentUuid": "fabf19d9_28b59e7d",
+      "range": {
+        "startLine": 83,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 19
+      },
+      "revId": "e77121fff51d99c4955bfb12defdae5a5cf4c5a0",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
