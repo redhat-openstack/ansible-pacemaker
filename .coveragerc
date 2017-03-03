@@ -1,0 +1,15 @@
+[paths]
+source =
+   modules
+
+[run]
+branch = true
+source =
+    modules
+    tests
+parallel = true
+
+[report]
+show_missing = true
+precision = 2
+omit = *migrations*
