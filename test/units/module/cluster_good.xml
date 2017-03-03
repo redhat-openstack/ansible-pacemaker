@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<crm_mon version="1.1.15">
+    <summary>
+        <stack type="corosync" />
+        <current_dc present="true" version="1.1.15-11.el7_3.2-e174ec8" name="overcloud-controller-1" id="2" with_quorum="true" />
+        <last_update time="Fri Mar  3 11:28:11 2017" />
+        <last_change time="Thu Mar  2 18:37:10 2017" user="root" client="cibadmin" origin="overcloud-controller-0" />
+        <nodes_configured number="3" expected_votes="unknown" />
+        <resources_configured number="19" />
+        <cluster_options stonith-enabled="false" symmetric-cluster="true" no-quorum-policy="stop" />
+    </summary>
+    <nodes>
+        <node name="overcloud-controller-0" id="1" online="true" standby="false" standby_onfail="false" maintenance="false" pending="false" unclean="false" shutdown="false" expected_up="true" is_dc="false" resources_running="7" type="member" />
+        <node name="overcloud-controller-1" id="2" online="true" standby="false" standby_onfail="false" maintenance="false" pending="false" unclean="false" shutdown="false" expected_up="true" is_dc="true" resources_running="6" type="member" />
+        <node name="overcloud-controller-2" id="3" online="true" standby="false" standby_onfail="false" maintenance="false" pending="false" unclean="false" shutdown="false" expected_up="true" is_dc="false" resources_running="6" type="member" />
+    </nodes>
+    <resources>
+        <resource id="ip-172.16.2.6" resource_agent="ocf::heartbeat:IPaddr2" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-0" id="1" cached="false"/>
+        </resource>
+        <resource id="ip-172.16.1.6" resource_agent="ocf::heartbeat:IPaddr2" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-1" id="2" cached="false"/>
+        </resource>
+        <resource id="ip-172.16.2.5" resource_agent="ocf::heartbeat:IPaddr2" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-2" id="3" cached="false"/>
+        </resource>
+        <resource id="ip-192.168.24.12" resource_agent="ocf::heartbeat:IPaddr2" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-0" id="1" cached="false"/>
+        </resource>
+        <resource id="ip-172.16.3.8" resource_agent="ocf::heartbeat:IPaddr2" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-1" id="2" cached="false"/>
+        </resource>
+        <clone id="haproxy-clone" multi_state="false" unique="false" managed="true" failed="false" failure_ignored="false" >
+            <resource id="haproxy" resource_agent="systemd:haproxy" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-2" id="3" cached="false"/>
+            </resource>
+            <resource id="haproxy" resource_agent="systemd:haproxy" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-0" id="1" cached="false"/>
+            </resource>
+            <resource id="haproxy" resource_agent="systemd:haproxy" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-1" id="2" cached="false"/>
+            </resource>
+        </clone>
+        <clone id="galera-master" multi_state="true" unique="false" managed="true" failed="false" failure_ignored="false" >
+            <resource id="galera" resource_agent="ocf::heartbeat:galera" role="Master" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-2" id="3" cached="false"/>
+            </resource>
+            <resource id="galera" resource_agent="ocf::heartbeat:galera" role="Master" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-0" id="1" cached="false"/>
+            </resource>
+            <resource id="galera" resource_agent="ocf::heartbeat:galera" role="Master" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-1" id="2" cached="false"/>
+            </resource>
+        </clone>
+        <clone id="rabbitmq-clone" multi_state="false" unique="false" managed="true" failed="false" failure_ignored="false" >
+            <resource id="rabbitmq" resource_agent="ocf::heartbeat:rabbitmq-cluster" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-2" id="3" cached="false"/>
+            </resource>
+            <resource id="rabbitmq" resource_agent="ocf::heartbeat:rabbitmq-cluster" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-0" id="1" cached="false"/>
+            </resource>
+            <resource id="rabbitmq" resource_agent="ocf::heartbeat:rabbitmq-cluster" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-1" id="2" cached="false"/>
+            </resource>
+        </clone>
+        <clone id="redis-master" multi_state="true" unique="false" managed="true" failed="false" failure_ignored="false" >
+            <resource id="redis" resource_agent="ocf::heartbeat:redis" role="Master" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-2" id="3" cached="false"/>
+            </resource>
+            <resource id="redis" resource_agent="ocf::heartbeat:redis" role="Slave" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-0" id="1" cached="false"/>
+            </resource>
+            <resource id="redis" resource_agent="ocf::heartbeat:redis" role="Slave" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+                <node name="overcloud-controller-1" id="2" cached="false"/>
+            </resource>
+        </clone>
+        <resource id="ip-10.0.0.8" resource_agent="ocf::heartbeat:IPaddr2" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-2" id="3" cached="false"/>
+        </resource>
+        <resource id="openstack-cinder-volume" resource_agent="systemd:openstack-cinder-volume" role="Started" active="true" orphaned="false" managed="true" failed="false" failure_ignored="false" nodes_running_on="1" >
+            <node name="overcloud-controller-0" id="1" cached="false"/>
+        </resource>
+    </resources>
+    <node_attributes>
+        <node name="overcloud-controller-0">
+            <attribute name="master-galera" value="100" />
+            <attribute name="master-redis" value="1" />
+            <attribute name="rmq-node-attr-last-known-rabbitmq" value="rabbit@overcloud-controller-0" />
+            <attribute name="rmq-node-attr-rabbitmq" value="rabbit@overcloud-controller-0" />
+        </node>
+        <node name="overcloud-controller-1">
+            <attribute name="master-galera" value="100" />
+            <attribute name="master-redis" value="1" />
+            <attribute name="rmq-node-attr-last-known-rabbitmq" value="rabbit@overcloud-controller-1" />
+            <attribute name="rmq-node-attr-rabbitmq" value="rabbit@overcloud-controller-1" />
+        </node>
+        <node name="overcloud-controller-2">
+            <attribute name="master-galera" value="100" />
+            <attribute name="master-redis" value="1" />
+            <attribute name="rmq-node-attr-last-known-rabbitmq" value="rabbit@overcloud-controller-2" />
+            <attribute name="rmq-node-attr-rabbitmq" value="rabbit@overcloud-controller-2" />
+        </node>
+    </node_attributes>
+    <node_history>
+        <node name="overcloud-controller-2">
+            <resource_history id="ip-172.16.2.5" orphan="false" migration-threshold="1000000">
+                <operation_history call="14" task="start" last-rc-change="Thu Mar  2 18:18:06 2017" last-run="Thu Mar  2 18:18:06 2017" exec-time="57ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="15" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:06 2017" exec-time="37ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="haproxy" orphan="false" migration-threshold="1000000">
+                <operation_history call="29" task="start" last-rc-change="Thu Mar  2 18:18:08 2017" last-run="Thu Mar  2 18:18:08 2017" exec-time="2054ms" queue-time="1ms" rc="0" rc_text="ok" />
+                <operation_history call="30" task="monitor" interval="60000ms" last-rc-change="Thu Mar  2 18:18:10 2017" exec-time="1ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="galera" orphan="false" migration-threshold="1000000">
+                <operation_history call="41" task="promote" last-rc-change="Thu Mar  2 18:18:36 2017" last-run="Thu Mar  2 18:18:36 2017" exec-time="10269ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="42" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:46 2017" exec-time="50ms" queue-time="0ms" rc="8" rc_text="master" />
+            </resource_history>
+            <resource_history id="rabbitmq" orphan="false" migration-threshold="1000000">
+                <operation_history call="53" task="start" last-rc-change="Thu Mar  2 18:19:08 2017" last-run="Thu Mar  2 18:19:08 2017" exec-time="5632ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="55" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:19:13 2017" exec-time="2259ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="redis" orphan="false" migration-threshold="1000000">
+                <operation_history call="66" task="promote" last-rc-change="Thu Mar  2 18:19:39 2017" last-run="Thu Mar  2 18:19:39 2017" exec-time="287ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="68" task="monitor" interval="20000ms" last-rc-change="Thu Mar  2 18:19:42 2017" exec-time="151ms" queue-time="0ms" rc="8" rc_text="master" />
+            </resource_history>
+            <resource_history id="ip-10.0.0.8" orphan="false" migration-threshold="1000000">
+                <operation_history call="61" task="start" last-rc-change="Thu Mar  2 18:19:13 2017" last-run="Thu Mar  2 18:19:13 2017" exec-time="59ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="62" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:19:13 2017" exec-time="41ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+        </node>
+        <node name="overcloud-controller-0">
+            <resource_history id="ip-172.16.2.6" orphan="false" migration-threshold="1000000">
+                <operation_history call="6" task="start" last-rc-change="Thu Mar  2 18:18:06 2017" last-run="Thu Mar  2 18:18:06 2017" exec-time="55ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="7" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:06 2017" exec-time="37ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="ip-192.168.24.12" orphan="false" migration-threshold="1000000">
+                <operation_history call="20" task="start" last-rc-change="Thu Mar  2 18:18:08 2017" last-run="Thu Mar  2 18:18:08 2017" exec-time="47ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="21" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:08 2017" exec-time="26ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="haproxy" orphan="false" migration-threshold="1000000">
+                <operation_history call="31" task="start" last-rc-change="Thu Mar  2 18:18:09 2017" last-run="Thu Mar  2 18:18:09 2017" exec-time="2073ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="32" task="monitor" interval="60000ms" last-rc-change="Thu Mar  2 18:18:11 2017" exec-time="1ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="galera" orphan="false" migration-threshold="1000000">
+                <operation_history call="43" task="promote" last-rc-change="Thu Mar  2 18:18:47 2017" last-run="Thu Mar  2 18:18:47 2017" exec-time="10280ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="44" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:57 2017" exec-time="67ms" queue-time="0ms" rc="8" rc_text="master" />
+            </resource_history>
+            <resource_history id="rabbitmq" orphan="false" migration-threshold="1000000">
+                <operation_history call="59" task="start" last-rc-change="Thu Mar  2 18:19:13 2017" last-run="Thu Mar  2 18:19:13 2017" exec-time="10741ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="61" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:19:24 2017" exec-time="2518ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="redis" orphan="false" migration-threshold="1000000">
+                <operation_history call="60" task="start" last-rc-change="Thu Mar  2 18:19:13 2017" last-run="Thu Mar  2 18:19:13 2017" exec-time="547ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="66" task="monitor" interval="60000ms" last-rc-change="Thu Mar  2 18:19:42 2017" exec-time="290ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="67" task="monitor" interval="45000ms" last-rc-change="Thu Mar  2 18:19:42 2017" exec-time="280ms" queue-time="289ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="openstack-cinder-volume" orphan="false" migration-threshold="1000000">
+                <operation_history call="72" task="start" last-rc-change="Thu Mar  2 18:29:37 2017" last-run="Thu Mar  2 18:29:37 2017" exec-time="2127ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="73" task="monitor" interval="60000ms" last-rc-change="Thu Mar  2 18:29:39 2017" exec-time="1ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+        </node>
+        <node name="overcloud-controller-1">
+            <resource_history id="ip-172.16.1.6" orphan="false" migration-threshold="1000000">
+                <operation_history call="10" task="start" last-rc-change="Thu Mar  2 18:18:06 2017" last-run="Thu Mar  2 18:18:06 2017" exec-time="45ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="11" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:07 2017" exec-time="35ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="ip-172.16.3.8" orphan="false" migration-threshold="1000000">
+                <operation_history call="24" task="start" last-rc-change="Thu Mar  2 18:18:08 2017" last-run="Thu Mar  2 18:18:08 2017" exec-time="38ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="25" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:08 2017" exec-time="24ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="haproxy" orphan="false" migration-threshold="1000000">
+                <operation_history call="31" task="start" last-rc-change="Thu Mar  2 18:18:09 2017" last-run="Thu Mar  2 18:18:09 2017" exec-time="2052ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="32" task="monitor" interval="60000ms" last-rc-change="Thu Mar  2 18:18:11 2017" exec-time="1ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="galera" orphan="false" migration-threshold="1000000">
+                <operation_history call="39" task="promote" last-rc-change="Thu Mar  2 18:18:30 2017" last-run="Thu Mar  2 18:18:30 2017" exec-time="6365ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="40" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:18:37 2017" exec-time="49ms" queue-time="0ms" rc="8" rc_text="master" />
+            </resource_history>
+            <resource_history id="rabbitmq" orphan="false" migration-threshold="1000000">
+                <operation_history call="55" task="start" last-rc-change="Thu Mar  2 18:19:24 2017" last-run="Thu Mar  2 18:19:24 2017" exec-time="14422ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="58" task="monitor" interval="10000ms" last-rc-change="Thu Mar  2 18:19:39 2017" exec-time="3214ms" queue-time="0ms" rc="0" rc_text="ok" />
+            </resource_history>
+            <resource_history id="redis" orphan="false" migration-threshold="1000000">
+                <operation_history call="56" task="start" last-rc-change="Thu Mar  2 18:19:24 2017" last-run="Thu Mar  2 18:19:24 2017" exec-time="422ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="61" task="monitor" interval="60000ms" last-rc-change="Thu Mar  2 18:19:42 2017" exec-time="335ms" queue-time="0ms" rc="0" rc_text="ok" />
+                <operation_history call="62" task="monitor" interval="45000ms" last-rc-change="Thu Mar  2 18:19:42 2017" exec-time="322ms" queue-time="334ms" rc="0" rc_text="ok" />
+            </resource_history>
+        </node>
+    </node_history>
+    <tickets>
+    </tickets>
+    <bans>
+    </bans>
+</crm_mon>
