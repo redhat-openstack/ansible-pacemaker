@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "b71da0e4_ee72a933",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-03-07T14:09:13Z",
+      "side": 1,
+      "message": "no pb, i was thinking it was because of the #1 ;)\nTbh, i don\u0027t know exactly where we can find a clear ansible api doc, from my side, the best documentation i have found is the code itself  :/",
+      "parentUuid": "1da2c792_374bd00b",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2990a7c7_976ca1e7",
         "filename": "modules/pacemaker_is_active.py",
         "patchSetId": 12
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Well checking state is kind of \"unsupported\" by ansible (as we saw when we asked for it upstream).  So changed state is as good as it gets.\n\nI\u0027ll add the get_type in the msg.",
       "parentUuid": "2990a7c7_976ca1e7",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1e4db0a5_210a50e0",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-03-07T14:09:13Z",
+      "side": 1,
+      "message": "i think doing something like:\n    return mod.exit_json(msg\u003d\"Resource {0} is active\".format(resource.name),\n                         changed\u003dFalse, resource\u003dresource.name, resource_type\u003dresource.get_type)\n\nit will return something like:\nok: [localhost] \u003d\u003e {\n    \"out\": {\n        \"changed\": false, \n        \"msg\": \"Resource haproxy is active\", \n        \"resource\": \"haproxy\", \n        \"resource_type\": \"clone\"\n    }\n}\n\nand then could be manipulate easily.",
+      "parentUuid": "aa6d271d_775e8b63",
       "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
