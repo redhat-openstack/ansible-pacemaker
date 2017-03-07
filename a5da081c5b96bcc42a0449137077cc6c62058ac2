@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1da2c792_374bd00b",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1004639
+      },
+      "writtenOn": "2017-03-07T10:35:11Z",
+      "side": 1,
+      "message": "First because I didn\u0027t know about it :)\n\nSecond, where is the ansible API described, my google fu wasn\u0027t strong enough to find it.  Should we just read the code : https://github.com/ansible/ansible/blob/devel/lib/ansible/module_utils/basic.py#L2233 ?\n\nThird here, I\u0027m doing a pipeline here, where I don\u0027t want shell evaluation (so I can\u0027t use \"|\")\n\nIt would open the door to command injection by passing anything in the template upgrade:\n\n    upgrade:\n      pacemaker_is_active:\n        name: \"; rm -rf / ; echo done\"\n\nA bit too much maybe, but it doesn\u0027t cost anything.  \n\nAs far as I can see the run_command above doesn\u0027t support pipe in this way.",
+      "parentUuid": "84dc6aa9_17e914ba",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2990a7c7_976ca1e7",
         "filename": "modules/pacemaker_is_active.py",
         "patchSetId": 12
@@ -30,6 +48,24 @@
       "writtenOn": "2017-03-07T09:06:02Z",
       "side": 1,
       "message": "changed\u003dTrue should be set only if a change occurred (if ansible change the state of something). This module is just a \"get_state\" module iiuc ?\n\nIt may be nice probably to have in the json some info about the resource (name, type from resource.get_type)",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa6d271d_775e8b63",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1004639
+      },
+      "writtenOn": "2017-03-07T10:35:11Z",
+      "side": 1,
+      "message": "Well checking state is kind of \"unsupported\" by ansible (as we saw when we asked for it upstream).  So changed state is as good as it gets.\n\nI\u0027ll add the get_type in the msg.",
+      "parentUuid": "2990a7c7_976ca1e7",
       "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
