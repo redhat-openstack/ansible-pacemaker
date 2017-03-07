@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84dc6aa9_17e914ba",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-03-07T09:06:02Z",
+      "side": 1,
+      "message": "why using subprocess instead of module.run_command provided by the ansible python framework ?",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2990a7c7_976ca1e7",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-03-07T09:06:02Z",
+      "side": 1,
+      "message": "changed\u003dTrue should be set only if a change occurred (if ansible change the state of something). This module is just a \"get_state\" module iiuc ?\n\nIt may be nice probably to have in the json some info about the resource (name, type from resource.get_type)",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
