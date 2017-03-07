@@ -105,6 +105,24 @@
       "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
       "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "38577954_89b402a9",
+        "filename": "modules/pacemaker_is_active.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1005220
+      },
+      "writtenOn": "2017-03-07T14:11:06Z",
+      "side": 1,
+      "message": "and so for the changed\u003dTrue, IMHO it may be better/cleaer to set it to false, since anything is changing on the node when the tasks is applied.",
+      "parentUuid": "1e4db0a5_210a50e0",
+      "revId": "a5da081c5b96bcc42a0449137077cc6c62058ac2",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
     }
   ]
 }
