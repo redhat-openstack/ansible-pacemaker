@@ -85,8 +85,8 @@ rc:
 
 _PCS_CLUSTER_DOWN="Error: cluster is not currently running on this node"
 
-def get_cluster_status(module):
-    cmd = "pcs cluster status"
+def get_cluster_status(module, timeout):
+    cmd = "pcs cluster status --wait %s" % timeout
     rc, out, err = module.run_command(cmd)
     if out in _PCS_CLUSTER_DOWN:
         return 'offline'
@@ -126,7 +126,7 @@ def set_cluster(module, state, timeout, force):
     t = time.time()
     ready = False
     while time.time() < t+timeout:
-        cluster_state = get_cluster_status(module)
+        cluster_state = get_cluster_status(module, timeout)
         if cluster_state == state:
             ready = True
             break
@@ -183,7 +183,7 @@ def main():
     if state in ['online', 'offline']:
         # Get cluster status
         if node is None:
-            cluster_state = get_cluster_status(module)
+            cluster_state = get_cluster_status(module, timeout)
             if cluster_state == state:
                 module.exit_json(changed=changed,
                          out=cluster_state)
@@ -191,7 +191,7 @@ def main():
                 if check_and_fail:
                     module.fail_json(msg="State not found to be in %s " % state)
                 set_cluster(module, state, timeout, force)
-                cluster_state = get_cluster_status(module)
+                cluster_state = get_cluster_status(module, timeout)
                 if cluster_state == state:
                     module.exit_json(changed=True,
                          out=cluster_state)
@@ -215,10 +215,10 @@ def main():
 
     if state in ['restart']:
         set_cluster(module, 'offline', timeout, force)
-        cluster_state = get_cluster_status(module)
+        cluster_state = get_cluster_status(module, timeout)
         if cluster_state == 'offline':
             set_cluster(module, 'online', timeout, force)
-            cluster_state = get_cluster_status(module)
+            cluster_state = get_cluster_status(module, timeout)
             if cluster_state == 'online':
                 module.exit_json(changed=True,
                      out=cluster_state)
