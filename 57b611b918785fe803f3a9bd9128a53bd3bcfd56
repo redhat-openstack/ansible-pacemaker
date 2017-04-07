@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1cf9d194_2c9f5dab",
+        "filename": "modules/pacemaker_cluster.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1004639
+      },
+      "writtenOn": "2017-04-07T09:00:49Z",
+      "side": 1,
+      "message": "I didn\u0027t find any timeout option in the ansible run_command, but just running this would do:\n\n   \"timeout {0} pcs cluster status\".format(timeout)",
+      "range": {
+        "startLine": 89,
+        "startChar": 11,
+        "endLine": 89,
+        "endChar": 29
+      },
+      "revId": "57b611b918785fe803f3a9bd9128a53bd3bcfd56",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1858f2a0_4e09ff3a",
+        "filename": "modules/pacemaker_cluster.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1004639
+      },
+      "writtenOn": "2017-04-07T09:00:49Z",
+      "side": 1,
+      "message": "From the man page I cannot see pcs cluster status taking the --wait option.  So I guess it doesn\u0027t do anything.  What we would have wanted was the -request-timeout option from https://github.com/ClusterLabs/pcs/commit/731127b8cfffd29c8546bd4a8a461f7aade5, but we don\u0027t have it.",
+      "range": {
+        "startLine": 89,
+        "startChar": 30,
+        "endLine": 89,
+        "endChar": 39
+      },
+      "revId": "57b611b918785fe803f3a9bd9128a53bd3bcfd56",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
