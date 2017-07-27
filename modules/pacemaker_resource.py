@@ -32,8 +32,9 @@ description:
 options:
     state:
       description:
-        - Indicate desired state of the cluster
-      choices: ['manage', 'unmanage', 'enable', 'disable', 'restart', 'show', 'delete']
+        - Indicate desired operation to be executed on the resource
+      choices: ['manage', 'unmanage', 'enable', 'disable', 'restart', 'show',
+                'delete', 'started', 'stopped', 'update']
       required: true
     resource:
       description:
@@ -55,6 +56,11 @@ options:
           - Wait for resource to get the required state, will failed if the timeout is reach
         required: false
         default: false
+    resource_options:
+      description:
+        - additional attributes or options to pass for a resource update
+      required: false
+      default: None
 requirements:
     - "python >= 2.6"
 '''
@@ -84,8 +90,9 @@ def get_resource(module, resource):
     rc, out, err = module.run_command(cmd)
     return out
 
-def set_resource_state(module, resource, state, timeout):
-    cmd = "pcs resource %s %s --wait=%s" % (state, resource, timeout)
+def set_resource_state(module, resource, state, timeout, resource_options=''):
+    cmd = "pcs resource %s %s --wait=%s %s" % (state, resource, timeout,
+                                               resource_options)
     rc, out, err = module.run_command(cmd)
     return out
 
@@ -96,6 +103,7 @@ def main():
         timeout=dict(default=300, type='int'),
         check_mode = dict(default=False, type='bool'),
         wait_for_resource = dict(default=False, type='bool'),
+        resource_options = dict(default=None),
     )
 
     module = AnsibleModule(argument_spec,
@@ -107,6 +115,7 @@ def main():
     timeout = module.params['timeout']
     check_mode = module.params['check_mode']
     wait_for_resource = module.params['wait_for_resource']
+    resource_options = module.params['resource_options']
 
     if check_mode:
         if check_resource_state(module, resource, state):
@@ -128,7 +137,7 @@ def main():
     #TODO: check state before doing anything:
     resource_state = get_resource(module, resource)
     # if resource_state = state:
-    out = set_resource_state(module, resource, state, timeout)
+    out = set_resource_state(module, resource, state, timeout, resource_options)
     module.exit_json(changed=True,
          out=out)
 
