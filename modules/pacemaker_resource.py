@@ -1,5 +1,5 @@
 #!/usr/bin/python
-#coding: utf-8 -*-
+# coding: utf-8 -*-
 
 # (c) 2016, Mathieu Bultel <mbultel@redhat.com>
 #
@@ -33,7 +33,8 @@ options:
     state:
       description:
         - Indicate desired state of the cluster
-      choices: ['manage', 'unmanage', 'enable', 'disable', 'restart', 'show', 'delete']
+      choices: ['manage', 'unmanage', 'enable', 'disable', 'restart',
+                'show', 'delete']
       required: true
     resource:
       description:
@@ -52,7 +53,8 @@ options:
         default: false
     wait_for_resource:
         description:
-          - Wait for resource to get the required state, will failed if the timeout is reach
+          - Wait for resource to get the required state, will failed if the
+            timeout is reach
         required: false
         default: false
 requirements:
@@ -72,6 +74,7 @@ RETURN = '''
 
 '''
 
+
 def check_resource_state(module, resource, state):
     # get resources
     cmd = "bash -c 'pcs status --full | grep %s'" % resource
@@ -79,28 +82,30 @@ def check_resource_state(module, resource, state):
     if state in out.lower():
         return True
 
+
 def get_resource(module, resource):
     cmd = "pcs resource show %s" % resource
     rc, out, err = module.run_command(cmd)
     return out
 
+
 def set_resource_state(module, resource, state, timeout):
     cmd = "pcs resource %s %s --wait=%s" % (state, resource, timeout)
-    rc, out, err = module.run_command(cmd)
-    return out
+    return module.run_command(cmd)
+
 
 def main():
     argument_spec = dict(
-        state = dict(choices=['manage', 'unmanage', 'enable', 'disable', 'restart', 'show', 'delete', 'started', 'stopped']),
-        resource  = dict(default=None),
+        state=dict(choices=['manage', 'unmanage', 'enable', 'disable',
+                            'restart', 'show', 'delete', 'started',
+                            'stopped']),
+        resource=dict(default=None),
         timeout=dict(default=300, type='int'),
-        check_mode = dict(default=False, type='bool'),
-        wait_for_resource = dict(default=False, type='bool'),
+        check_mode=dict(default=False, type='bool'),
+        wait_for_resource=dict(default=False, type='bool'),
     )
 
-    module = AnsibleModule(argument_spec,
-        supports_check_mode=True,
-    )
+    module = AnsibleModule(argument_spec, supports_check_mode=True)
     changed = False
     state = module.params['state']
     resource = module.params['resource']
@@ -111,7 +116,7 @@ def main():
     if check_mode:
         if check_resource_state(module, resource, state):
             module.exit_json(changed=False,
-              out={'resource': resource, 'status': state})
+                             out={'resource': resource, 'status': state})
         else:
             if wait_for_resource:
                 t = time.time()
@@ -122,15 +127,22 @@ def main():
                         break
                 if status:
                     module.exit_json(changed=False,
-                      out={'resource': resource, 'status': state})
-            module.fail_json(msg="Failed, the resource %s is not %s\n" % (resource, state))
+                                     out={'resource': resource,
+                                          'status': state})
+            module.fail_json(msg="Failed, the resource %s is not %s\n" %
+                             (resource, state))
 
-    #TODO: check state before doing anything:
+    # TODO: check state before doing anything:
     resource_state = get_resource(module, resource)
     # if resource_state = state:
-    out = set_resource_state(module, resource, state, timeout)
-    module.exit_json(changed=True,
-         out=out)
+    rc, out, err = set_resource_state(module, resource, state, timeout)
+    if rc == 1:
+        module.fail_json(msg="Failed, to set the resource %s to the state"
+                         "%s" % (resource, state),
+                         rc=rc,
+                         output=out,
+                         error=err)
+    module.exit_json(changed=True, out=out, rc=rc)
 
 from ansible.module_utils.basic import *
 if __name__ == '__main__':
