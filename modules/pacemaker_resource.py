@@ -34,7 +34,7 @@ options:
       description:
         - Indicate desired state of the cluster
       choices: ['manage', 'unmanage', 'enable', 'disable', 'restart',
-                'show', 'delete']
+                'show', 'delete', 'started']
       required: true
     resource:
       description:
@@ -77,7 +77,7 @@ RETURN = '''
 
 def check_resource_state(module, resource, state):
     # get resources
-    cmd = "bash -c 'pcs status --full | grep %s'" % resource
+    cmd = "bash -c 'pcs status --full | grep -w \"%s[ \t]\"'" % resource
     rc, out, err = module.run_command(cmd)
     if state in out.lower():
         return True
