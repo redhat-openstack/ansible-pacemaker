@@ -34,7 +34,7 @@ options:
       description:
         - Indicate desired state of the cluster
       choices: ['manage', 'unmanage', 'enable', 'disable', 'restart',
-                'show', 'delete', 'started']
+                'show', 'delete', 'started', 'master', 'slave']
       required: true
     resource:
       description:
@@ -98,7 +98,7 @@ def main():
     argument_spec = dict(
         state=dict(choices=['manage', 'unmanage', 'enable', 'disable',
                             'restart', 'show', 'delete', 'started',
-                            'stopped']),
+                            'stopped', 'master', 'slave']),
         resource=dict(default=None),
         timeout=dict(default=300, type='int'),
         check_mode=dict(default=False, type='bool'),
