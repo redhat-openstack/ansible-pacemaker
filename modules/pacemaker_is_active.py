@@ -80,16 +80,23 @@ class Resource(object):
     "Base clase for resource and resource factory."
     get_type = None
 
-    def _filter_xpath(self, xpath):
-        "Filter the cib on some xpath."
+    def _filter_xpath_crmmon(self, xpath):
+        "Filter the crmmon xml output on some xpath."
         xml_string = self.mod.run_command(['crm_mon', '-r', '--as-xml'],
+                                          {'check_rc': True})[1]
+        tree = etree.fromstring(str(xml_string))
+        return tree.xpath(xpath)
+
+    def _filter_xpath_cib(self, xpath):
+        "Filter the cib on some xpath."
+        xml_string = self.mod.run_command(['cibadmin', '-l', '--query'],
                                           {'check_rc': True})[1]
         tree = etree.fromstring(str(xml_string))
         return tree.xpath(xpath)
 
     def _current_count(self, role):
         "Calculate the current active instance."
-        return int(self._filter_xpath(
+        return int(self._filter_xpath_crmmon(
             "count(//resource[@id='{0}' and {1} and {2} and {3} and {4}])"
             .format(self.name,
                     "@orphaned='false'",
@@ -104,6 +111,11 @@ class Resource(object):
             ['crm_resource', '-r',
              self.name,
              '--meta', '-g', prop]
+        )
+
+    def _get_cib(self):
+        return self.mod.run_command(
+            ['cibadmin', '-l', '--query']
         )
 
     def _create_result(self, msg):
@@ -134,7 +146,7 @@ class Resource(object):
         could be found, it return a "Resource" instance.
 
         """
-        res_array = self._filter_xpath(
+        res_array = self._filter_xpath_crmmon(
             '//resources/*[contains(@id,"{0}")]'.format(self.name)
         )
         if len(res_array) == 0:
@@ -148,9 +160,111 @@ class Resource(object):
                 return Clone(self.mod, self.name)
             elif res.get('multi_state') == 'true':
                 return Master(self.mod, self.name)
+        elif res.tag == 'bundle':
+            return Bundle(self.mod, self.name)
 
         return self
 
+class Bundle(Resource):
+    "Representation of a bundle resource."
+    get_type = 'bundle'
+
+    def __init__(self, mod, resource_name):
+        super(Bundle, self).__init__(mod, resource_name)
+        self.primitive_name = self._get_primitive_name()
+
+    # Returns the primitive name running inside the bundle
+    # It will be an empty string in case the bundle does not
+    # contain a primitive (e.g. haproxy-bundle)
+    def _get_primitive_name(self):
+        return self._filter_xpath_cib(
+           'string(//resources/bundle[@id="{0}"]/primitive/@id)'
+           .format(self.name)
+        )
+
+    # get the configured number of masters from the CIB
+    def _get_bundle_masters(self):
+        ret = self._filter_xpath_cib(
+           'string(//resources/bundle[@id="{0}"]/docker/@masters)'
+           .format(self.name)
+        )
+        try:
+            return int(ret)
+        except ValueError:
+            return 0
+
+    # get the configured number of replicas from the CIB
+    def _get_bundle_replicas(self):
+        ret = self._filter_xpath_cib(
+           'string(//resources/bundle[@id="{0}"]/docker/@replicas)'
+           .format(self.name)
+        )
+        try:
+            return int(ret)
+        except ValueError:
+            return 0
+
+    # count the number of running masters (checks done via the primitive
+    # name running inside the bundle
+    def _get_bundle_running_masters(self):
+        return int(self._filter_xpath_crmmon(
+           'count(//resource[@id="{0}" and @orphaned="false" and @failed="false"' \
+           ' and @active="true" and @role="Master"])'
+           .format(self.primitive_name)
+        ))
+
+    # count the number of replicas when we have a primitive inside the bundle
+    def _get_bundle_running_replicas(self):
+        return int(self._filter_xpath_crmmon(
+           'count(//resource[@id="{0}" and @orphaned="false" and @failed="false"' \
+           ' and @active="true" and @role="Started"])'
+           .format(self.primitive_name)
+        ))
+
+    # count the number of replicas when we have a simple bundle
+    def _get_bundle_running_containers(self):
+        return int(self._filter_xpath_crmmon(
+           'count(//bundle[@id="{0}"]/replica/resource[@orphaned="false" and @failed="false"' \
+           ' and @active="true" and @role="Started"])'
+           .format(self.name)
+        ))
+
+    def _is_bundle_master(self):
+        return (self._get_bundle_masters() > 0)
+
+    # Returns true if the bundle has a primitive inside (redis, galera, rabbitmq)
+    def _is_bundle_ocf(self):
+        return (self.primitive_name != "")
+
+    def expected_count(self):
+        """Return the expected number of instance of a bundle resource.
+
+        This function takes a resource name (the resource must be of bundle
+        type) and returns the expected count depending on the number of replicas
+        configured on the bundle.
+
+        """
+        if self._is_bundle_ocf(): # master/slave or clone inside the bundle
+            if self._is_bundle_master():
+                expected_count = self._get_bundle_masters()
+            else:
+                expected_count = self._get_bundle_replicas()
+        else: # plain docker bundle without ocf resources inside
+            expected_count = self._get_bundle_replicas()
+
+        return int(expected_count)
+
+    def current_count(self):
+        "Calculate the current active instance."
+        if self._is_bundle_ocf(): # master/slave or clone inside the bundle
+            if self._is_bundle_master():
+                current_count = self._get_bundle_running_masters()
+            else:
+                current_count = self._get_bundle_running_replicas()
+        else: # plain docker bundle without ocf resources inside
+            current_count = self._get_bundle_running_containers()
+
+        return int(current_count)
 
 class Master(Resource):
     "Representation of a master/slave resource."
