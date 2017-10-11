@@ -85,13 +85,20 @@ def check_resource_state(module, resource, state):
 
 def get_resource(module, resource):
     cmd = "pcs resource show %s" % resource
-    rc, out, err = module.run_command(cmd)
-    return out
+    return module.run_command(cmd)
 
 
 def set_resource_state(module, resource, state, timeout):
     cmd = "pcs resource %s %s --wait=%s" % (state, resource, timeout)
-    return module.run_command(cmd)
+    cmd_status = module.run_command(cmd)
+    if cmd_status[0] == 0 and state == 'delete':
+        # pcs delete operations are not atomic, the deletion might
+        # fail if concurrent actions are happening on the resource
+        # (e.g. cleanup). Double check that the deletion succeeded
+        probe_status = get_resource(module, resource)
+        if probe_status[0] == 0:
+            return (1, 'Resource still present after deletion command', '')
+    return cmd_status
 
 
 def main():
@@ -137,7 +144,7 @@ def main():
     # if resource_state = state:
     rc, out, err = set_resource_state(module, resource, state, timeout)
     if rc == 1:
-        module.fail_json(msg="Failed, to set the resource %s to the state"
+        module.fail_json(msg="Failed, to set the resource %s to the state "
                          "%s" % (resource, state),
                          rc=rc,
                          output=out,
