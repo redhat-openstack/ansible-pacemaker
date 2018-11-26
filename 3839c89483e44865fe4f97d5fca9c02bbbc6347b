@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3294ad94_0cd07ec9",
+        "filename": "setup.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1006223
+      },
+      "writtenOn": "2018-11-26T18:29:26Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to do this because we configure /usr/share/ansible-modules in THT. We do however need to make ansible-pacemaker work with python3 via packaging",
+      "revId": "3839c89483e44865fe4f97d5fca9c02bbbc6347b",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
