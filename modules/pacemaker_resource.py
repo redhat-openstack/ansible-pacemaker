@@ -74,6 +74,15 @@ RETURN = '''
 
 '''
 
+_PCS_CLUSTER_DOWN="Error: cluster is not currently running on this node"
+
+def get_cluster_status(module):
+    cmd = "pcs cluster status"
+    rc, out, err = module.run_command(cmd)
+    if out in _PCS_CLUSTER_DOWN:
+        return 'offline'
+    else:
+        return 'online'
 
 def check_resource_state(module, resource, state):
     # get resources
@@ -140,6 +149,12 @@ def main():
                              (resource, state))
 
     # TODO: check state before doing anything:
+    cluster_state = get_cluster_status(module)
+    if cluster_state == "offline" and state == "disable":
+        module.warn('Resource %s could not be stopped '
+                    'becouse the cluster is offline' % resource)
+        module.exit_json(changed=False, out='skipped, since the '
+                         'cluster is offline', rc=0)
     resource_state = get_resource(module, resource)
     # if resource_state = state:
     rc, out, err = set_resource_state(module, resource, state, timeout)
