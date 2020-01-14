@@ -33,7 +33,7 @@ options:
       description:
         - How many seconds should we wait for the resource to be active.
       required: false
-      default: 3
+      default: 5
 
 '''
 
@@ -51,7 +51,7 @@ EXAMPLES = '''
 '''
 
 RETURN = '''
-change:
+changed:
   description: True if the resource is active.
   type: bool
 out:
@@ -295,8 +295,8 @@ def main():
     "Main function called by Ansible."
     mod = AnsibleModule(
         argument_spec=dict(
-            resource=dict(required=True),
-            max_wait=dict(default=5),  # in seconds
+            resource=dict(type='str',required=True),
+            max_wait=dict(type='int',default=5),  # in seconds
         )
     )
 
