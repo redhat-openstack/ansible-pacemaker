@@ -89,7 +89,9 @@ def get_resource(module, resource):
 
 
 def set_resource_state(module, resource, state, timeout):
-    cmd = "pcs resource %s %s --wait=%s" % (state, resource, timeout)
+    cmd = "pcs resource %s %s" % (state, resource)
+    if state in ["enable", "disable", "restart"]:
+        cmd += " --wait=%s" % timeout
     cmd_status = module.run_command(cmd)
     if cmd_status[0] == 0 and state == 'delete':
         # pcs delete operations are not atomic, the deletion might
