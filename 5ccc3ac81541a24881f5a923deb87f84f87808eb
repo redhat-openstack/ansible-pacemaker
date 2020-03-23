@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "742b89f4_0ca8bb6e",
+        "filename": "setup.cfg",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001933
+      },
+      "writtenOn": "2020-03-23T15:03:57Z",
+      "side": 1,
+      "message": "I skipped /usr here, since apparently this isn\u0027t needed see https://github.com/openstack/tripleo-ansible/blob/master/setup.cfg#L25",
+      "revId": "5ccc3ac81541a24881f5a923deb87f84f87808eb",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": true
+    }
+  ]
+}
