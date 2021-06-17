@@ -83,12 +83,14 @@ rc:
     type: bool
 '''
 
-_PCS_CLUSTER_DOWN="Error: cluster is not currently running on this node"
-
 def get_cluster_status(module):
+    cmd_partition = "crm_node -q"
+    partition_rc, partition_out, partition_err = module.run_command(cmd_partition)
+    if partition_out.strip() != "1": # we're not in a quorate partition or cluster is down
+        return 'offline'
     cmd = "pcs cluster status"
     rc, out, err = module.run_command(cmd)
-    if out in _PCS_CLUSTER_DOWN:
+    if rc != 0:
         return 'offline'
     else:
         return 'online'
