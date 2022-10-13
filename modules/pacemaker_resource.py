@@ -143,15 +143,17 @@ def main():
 
     # TODO: check state before doing anything:
     resource_state = get_resource(module, resource)
-    # if resource_state = state:
-    rc, out, err = set_resource_state(module, resource, state, timeout)
-    if rc == 1:
-        module.fail_json(msg="Failed, to set the resource %s to the state "
-                         "%s" % (resource, state),
-                         rc=rc,
-                         output=out,
-                         error=err)
-    module.exit_json(changed=True, out=out, rc=rc)
+    if state == 'delete' and resource_state[0] == 0:
+        rc, out, err = set_resource_state(module, resource, state, timeout)
+        if rc == 1:
+            module.fail_json(msg="Failed, to set the resource %s to the state "
+                             "%s" % (resource, state),
+                             rc=rc,
+                             output=out,
+                             error=err)
+        module.exit_json(changed=True, out=out, rc=rc)
+    else:
+        module.exit_json(changed=False)
 
 from ansible.module_utils.basic import *
 if __name__ == '__main__':
