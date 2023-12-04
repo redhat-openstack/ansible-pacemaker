@@ -84,7 +84,7 @@ def check_resource_state(module, resource, state):
 
 
 def get_resource(module, resource):
-    cmd = "pcs resource show %s" % resource
+    cmd = "pcs resource config %s" % resource
     return module.run_command(cmd)
 
 
