@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d003b876_8a61926f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 141
+      },
+      "writtenOn": "2023-12-19T11:16:41Z",
+      "side": 1,
+      "message": "I proposed the original patch so I couldn\u0027t technically vote, but +1 as acknowledgement!",
+      "revId": "4d75b32771761d491dd881cd93a2bf205f783fab",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
