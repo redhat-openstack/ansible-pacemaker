@@ -16,6 +16,23 @@
       "message": "I proposed the original patch so I couldn\u0027t technically vote, but +1 as acknowledgement!",
       "revId": "4d75b32771761d491dd881cd93a2bf205f783fab",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c02c489a_4e6f1145",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 278
+      },
+      "writtenOn": "2023-12-20T10:56:55Z",
+      "side": 1,
+      "message": "Merging this patch since it\u0027s a cherry pick, already merged in the old gerrithub.io and the downstream repo.",
+      "revId": "4d75b32771761d491dd881cd93a2bf205f783fab",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
