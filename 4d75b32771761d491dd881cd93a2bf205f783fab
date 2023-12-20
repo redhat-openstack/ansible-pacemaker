@@ -1,0 +1,9 @@
+Code-Review+1: Luigi Toscano <ltoscano@redhat.com>
+Workflow+1: mathieu bultel <mat.bultel@gmail.com>
+Code-Review+2: mathieu bultel <mat.bultel@gmail.com>
+Verified+2: mathieu bultel <mat.bultel@gmail.com>
+Submitted-by: mathieu bultel <mat.bultel@gmail.com>
+Submitted-at: Wed, 20 Dec 2023 10:57:06 +0000
+Reviewed-on: https://review.rdoproject.org/r/c/redhat-openstack/ansible-pacemaker/+/51127
+Project: redhat-openstack/ansible-pacemaker
+Branch: refs/heads/master
